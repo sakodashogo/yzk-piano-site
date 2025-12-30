@@ -1,0 +1,108 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const pageTitle = "レッスンについて | 髙橋遊月ピアノ教室";
+---
+
+<Layout title={pageTitle}>
+    <section class="py-20 px-6 max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+            <h1 class="text-3xl font-serif mb-4">Lesson Flow</h1>
+            <p class="text-[#A88B58] text-sm tracking-widest font-serif">レッスンの流れ</p>
+        </div>
+
+        {/* 原稿：レッスンの流れ */}
+        <div class="space-y-12 relative before:absolute before:left-[15px] before:top-4 before:bottom-4 before:w-[2px] before:bg-[#E8E2D9] before:content-[''] md:before:left-1/2 md:before:-ml-[1px]">
+            <div class="relative flex flex-col md:flex-row items-center justify-between gap-8 group">
+                <div class="pl-12 md:pl-0 md:w-[45%] md:text-right">
+                    <h3 class="text-xl font-serif text-[#A88B58] mb-2">01. お問い合わせ</h3>
+                    <p class="text-sm leading-loose">
+                        まずは<a href="/contact" class="underline hover:text-[#A88B58]">お問い合わせフォーム</a>よりご連絡ください。ご希望のコースや、体験レッスンの日時についてご相談させていただきます。
+                    </p>
+                </div>
+                <div class="absolute left-0 top-0 w-8 h-8 bg-[#A88B58] rounded-full text-white flex items-center justify-center font-bold text-sm z-10 md:left-1/2 md:-ml-4">1</div>
+                <div class="hidden md:block md:w-[45%]"></div>
+            </div>
+
+            <div class="relative flex flex-col md:flex-row items-center justify-between gap-8 group">
+                <div class="hidden md:block md:w-[45%]"></div>
+                <div class="absolute left-0 top-0 w-8 h-8 bg-[#A88B58] rounded-full text-white flex items-center justify-center font-bold text-sm z-10 md:left-1/2 md:-ml-4">2</div>
+                <div class="pl-12 md:pl-0 md:w-[45%]">
+                    <h3 class="text-xl font-serif text-[#A88B58] mb-2">02. 体験レッスン</h3>
+                    <p class="text-sm leading-loose">
+                        実際に講師がご自宅へ伺います。30分程度のレッスンと、カウンセリングを行います。初めての方も、経験者の方も、まずはピアノに触れてみましょう。
+                    </p>
+                </div>
+            </div>
+
+            <div class="relative flex flex-col md:flex-row items-center justify-between gap-8 group">
+                <div class="pl-12 md:pl-0 md:w-[45%] md:text-right">
+                    <h3 class="text-xl font-serif text-[#A88B58] mb-2">03. プランのご提案</h3>
+                    <p class="text-sm leading-loose">
+                        体験レッスンの様子を踏まえ、お一人おひとりに合った教材やレッスンの進め方をご提案いたします。システムや料金についても詳しくご説明します。
+                    </p>
+                </div>
+                <div class="absolute left-0 top-0 w-8 h-8 bg-[#A88B58] rounded-full text-white flex items-center justify-center font-bold text-sm z-10 md:left-1/2 md:-ml-4">3</div>
+                <div class="hidden md:block md:w-[45%]"></div>
+            </div>
+
+            <div class="relative flex flex-col md:flex-row items-center justify-between gap-8 group">
+                <div class="hidden md:block md:w-[45%]"></div>
+                <div class="absolute left-0 top-0 w-8 h-8 bg-[#A88B58] rounded-full text-white flex items-center justify-center font-bold text-sm z-10 md:left-1/2 md:-ml-4">4</div>
+                <div class="pl-12 md:pl-0 md:w-[45%]">
+                    <h3 class="text-xl font-serif text-[#A88B58] mb-2">04. レッスン開始</h3>
+                    <p class="text-sm leading-loose">
+                        内容にご納得いただけましたら、正式に入会となります。あなたのためのオーダーメイドな音楽の時間の始まりです。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-[#F7F3EE]">
+        <div class="max-w-4xl mx-auto px-6">
+             <div class="text-center mb-16">
+                <h2 class="text-3xl font-serif mb-4">Voice</h2>
+                <p class="text-[#A88B58] text-sm tracking-widest font-serif">生徒様の声</p>
+            </div>
+            
+            {/* 原稿：生徒様の声 */}
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-[#E8E2D9]">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="text-2xl">👦</span>
+                        <div>
+                            <p class="font-bold text-sm">小学生のお母様</p>
+                            <p class="text-xs opacity-60">ピアノ歴 1年</p>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-loose text-[#6B5F54]">
+                        「送り迎えの必要がないので、共働きの我が家にはとても助かっています。先生は子供のペースに合わせて優しく指導してくださるので、息子も毎週のレッスンを楽しみにしています。自宅のピアノで習えるので、リラックスして取り組めているようです。」
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-[#E8E2D9]">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="text-2xl">👩</span>
+                        <div>
+                            <p class="font-bold text-sm">30代 女性</p>
+                            <p class="text-xs opacity-60">大人の趣味コース</p>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-loose text-[#6B5F54]">
+                        「子供の頃に習っていたピアノを再開したくて申し込みました。仕事が忙しい時期は月1回、余裕がある時は月2回と、自分のスケジュールに合わせて回数を選べるのが嬉しいです。好きな曲を中心に教えていただけるので、無理なく続けられています。」
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {/* 既存の料金表コンポーネントがあればここに配置、なければindex.astroからコードを移植 */}
+    <section class="py-20 px-6 max-w-4xl mx-auto text-center">
+        <h2 class="text-2xl font-serif mb-8">料金・システム</h2>
+        <p class="mb-8 text-sm">
+            <a href="/contact" class="inline-block bg-[#544A40] text-white px-8 py-3 rounded-full">詳しくはお問い合わせください</a>
+        </p>
+        {/* ここにindex.astroの料金表コードを貼り付け */}
+    </section>
+</Layout>
