@@ -2,7 +2,7 @@
 const navItems = [
   { href: '/', label: 'HOME' },
   { href: '/lesson', label: 'LESSON' },
-  { href: '/news', label: 'NEWS' }, // ← ここに追加！
+  { href: '/news', label: 'NEWS' },
   { href: '/faq', label: 'FAQ' },
   { href: '/contact', label: 'CONTACT' },
 ];
@@ -13,15 +13,23 @@ const navItems = [
     <a href="/" class="text-[#544A40] font-serif font-bold tracking-widest text-lg">
       Yuzuki Piano
     </a>
-    <nav class="hidden md:flex gap-8">
-      {navItems.map(item => (
-        <a href={item.href} class="text-[#544A40] hover:text-[#A88B58] text-sm tracking-widest font-sans transition-colors">
-          {item.label}
-        </a>
-      ))}
-    </nav>
-    <a href="/contact" class="bg-[#A88B58] text-white px-6 py-2 rounded-full text-xs font-bold tracking-widest hover:bg-[#8B7347] transition-colors md:hidden">
-      体験申込
+    <div class="flex items-center gap-8">
+      <nav class="hidden md:flex gap-8">
+        {navItems.map(item => (
+          <a href={item.href} class="text-[#544A40] hover:text-[#A88B58] text-sm tracking-widest font-sans transition-colors">
+            {item.label}
+          </a>
+        ))}
+      </nav>
+      {/* PC用ボタンを追加 */}
+      <a href="/contact" class="hidden md:inline-block bg-[#A88B58] text-white px-6 py-2 rounded-full text-xs font-bold tracking-widest hover:bg-[#8B7347] transition-colors">
+        無料体験レッスン申込
+      </a>
+    </div>
+    
+    {/* スマホ用ボタン（文言を少し短く調整してもOKですが、ここでは統一感を出すため合わせます） */}
+    <a href="/contact" class="bg-[#A88B58] text-white px-4 py-2 rounded-full text-[10px] font-bold tracking-widest hover:bg-[#8B7347] transition-colors md:hidden">
+      無料体験申込
     </a>
   </div>
 </header>

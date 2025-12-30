@@ -146,13 +146,12 @@ const pageTitle = "レッスンについて | 髙橋遊月ピアノ教室";
             </div>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
-            {/* 絵文字を削除 */}
+        <div class="flex flex-col gap-8"> {/* GridをやめてFlex(縦並び)に変更 */}
             <div class="bg-[#F7F3EE] p-8 rounded-2xl border border-[#E8E2D9]">
                 <h3 class="font-serif font-bold text-[#A88B58] mb-4 flex items-center gap-2">
                      月謝の例
                 </h3>
-                <div class="space-y-4 mb-6">
+                 <div class="grid md:grid-cols-2 gap-4 mb-2"> {/* 中身を横並びにして見やすく調整 */}
                     <div class="bg-white p-4 rounded-lg shadow-sm font-serif">
                         <p class="text-xs text-[#8B7355] mb-1 font-sans">無理なく続けるなら</p>
                         <p class="text-base text-[#544A40]">30分 × 月3回 <span class="mx-2">→</span> <span class="font-bold text-lg">15,000円</span></p>
@@ -162,12 +161,11 @@ const pageTitle = "レッスンについて | 髙橋遊月ピアノ教室";
                         <p class="text-base text-[#544A40]">60分 × 月2回 <span class="mx-2">→</span> <span class="font-bold text-lg">20,000円</span></p>
                     </div>
                 </div>
-                <p class="text-xs text-[#6B5F54]">※別途教材費がかかる場合がございます。</p>
+                <p class="text-xs text-[#6B5F54] mt-2">※別途教材費がかかる場合がございます。</p>
             </div>
 
             <div class="bg-[#F7F3EE] p-8 rounded-2xl border border-[#E8E2D9]">
-                {/* 絵文字を削除 */}
-                <h3 class="font-serif font-bold text-[#A88B58] mb-4 flex items-center gap-2">
+                <h3 class="font-serif font-bold text-[#A88B58] mb-4 flex items-center gap-2 text-xl"> {/* 文字サイズを少し大きく */}
                      レッスン会場について
                 </h3>
                 <ul class="space-y-4 text-sm leading-relaxed text-[#6B5F54]">
@@ -184,7 +182,7 @@ const pageTitle = "レッスンについて | 髙橋遊月ピアノ教室";
                         <span class="text-[#A88B58] mt-1.5 text-xs">●</span>
                         <span>場所の詳細は、生徒さまのご希望や状況に合わせて検討いたします。</span>
                     </li>
-                </ul>
+                 </ul>
                 <div class="mt-6 pt-6 border-t border-[#E8E2D9]">
                     <p class="text-sm">分からないことや聞いておきたいことがございましたら、<span class="inline-block">遠慮なくご連絡ください。</span></p>
                 </div>
