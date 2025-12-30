@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+/* サイト全体の文字設定 */
+body {
+  /* 文字を滑らかにする設定 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tailwindの font-serif クラスが Shippori Mincho を優先して使うように設定 */
+.font-serif {
+  font-family: 'Shippori Mincho', 'Yu Mincho', 'YuMincho', serif !important;
+}
