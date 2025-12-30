@@ -1,20 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
+// microCMSクライアントをインポート
+import { client } from '../lib/microcms';
+import type { Blog } from '../lib/microcms';
 
 // SEO用の設定
 const pageTitle = "江東区・清澄白河の出張ピアノレッスン | 髙橋遊月ピアノ教室";
-const pageDescription = "江東区・清澄白河エリアを中心に活動する講師による出張ピアノ教室です。ご自宅でリラックスしながら、大人からお子様まで一人ひとりの感性を大切に育むオーダーメイドレッスン。無料体験受付中。";
+const pageDescription = "江東区・清澄白河エリアを中心に活動する講師による出張ピアノ教室です。...";
 
-const newsContents = [
-  {
-    createdAt: '2025-12-28',
-    title: 'ホームページをリニューアルしました。'
-  },
-  {
-    createdAt: '2025-12-20',
-    title: '1月の江東区内・出張体験レッスン受付中です。'
-  }
-];
+// microCMSからお知らせを取得（最新3件）
+const response = await client.get({
+  endpoint: "news",
+  queries: { limit: 3, fields: ["id", "title", "publishedAt"] }
+});
+const newsContents = response.contents;
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -52,18 +51,25 @@ const newsContents = [
 				</div>
 			</div>
 		</section>
-
+		
 		<section class="py-12 px-6 max-w-4xl mx-auto">
 			<h2 class="text-xl font-serif font-bold mb-8 text-center text-[#A88B58]">Information</h2>
 			<div class="space-y-3">
 				{newsContents.length > 0 ? (
-					newsContents.map((item) => (
-						<div class="bg-white/60 backdrop-blur-sm p-4 rounded-lg border border-[#E8E2D9] flex flex-col md:flex-row md:items-center gap-4">
-							<span class="text-xs opacity-50 font-mono italic">
-								{item.createdAt}
-							</span>
-							<span class="text-sm tracking-wide">{item.title}</span>
-						</div>
+					newsContents.map((item: any) => (
+                        <a href={`/news/${item.id}`} class="block group">
+    						<div class="bg-white/60 backdrop-blur-sm p-4 rounded-lg border border-[#E8E2D9] flex flex-col md:flex-row md:items-center gap-4 transition-all group-hover:bg-white group-hover:shadow-md">
+	    						<span class="text-xs opacity-50 font-mono italic">
+		    						{new Date(item.publishedAt).toLocaleDateString('ja-JP')}
+			    				</span>
+				    			<span class="text-sm tracking-wide group-hover:text-[#A88B58] transition-colors">
+                                    {item.title}
+                                </span>
+                                <span class="hidden md:block ml-auto text-xs text-[#A88B58] opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Read more &rarr;
+                                </span>
+					    	</div>
+                        </a>
 					))
 				) : (
 					<p class="text-sm opacity-60 text-center">現在お知らせはありません。</p>
