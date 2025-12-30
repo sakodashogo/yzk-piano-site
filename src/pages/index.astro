@@ -32,25 +32,25 @@ const newsContents = [
 
 			<div class="relative z-10 text-center px-4 max-w-5xl">
 				<span class="inline-block mb-6 text-[#544A40] font-bold drop-shadow-md tracking-[0.2em] text-xl md:text-2xl font-serif">
-					江東区・清澄白河エリアの出張レッスン
+					<span class="inline-block">江東区・清澄白河エリアの</span><span class="inline-block">出張レッスン</span>
 				</span>
 				
-				{/* 修正: 影(drop-shadow-lg)を削除 */}
-				<h1 class="text-3xl md:text-5xl font-serif  mb-6 leading-tight tracking-wider text-[#544A40]">
+				<h1 class="text-3xl md:text-5xl font-serif font-bold mb-10 leading-tight tracking-wider text-[#544A40]">
 					日常に彩りを添える、<br/>心豊かなピアノの時間
 				</h1>
 				
-				{/* 修正: 太さ指定(font-medium)を削除して元に戻す */}
-				<p class="text-base md:text-lg mb-12 leading-loose">
+				<p class="text-base md:text-lg mb-16 leading-loose">
 					講師がご自宅へ伺い、あなたの大切なピアノで、<br/>
 					あなただけの音色を一緒に奏でます。
 				</p>
-				<a 
-					href="#contact" 
-					class="inline-block bg-[#A88B58] text-white px-12 py-5 rounded-full shadow-md hover:bg-[#8B7347] transition-all transform hover:-translate-y-1 tracking-widest text-sm font-bold"
-				>
-					無料体験レッスンを申し込む
-				</a>
+
+				{/* 修正: animate-bounce(上下の動き)を animate-pulse(点滅)に変更して控えめに */}
+				<div class="animate-pulse mt-8 opacity-60">
+					<span class="block text-xs tracking-[0.3em] mb-2 uppercase font-serif">Scroll</span>
+					<svg class="w-6 h-6 mx-auto text-[#A88B58]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+					</svg>
+				</div>
 			</div>
 		</section>
 
@@ -305,7 +305,7 @@ const newsContents = [
 
 		<a 
 			href="#contact" 
-			class="fixed bottom-6 right-6 z-50 bg-[#A88B58] text-white px-8 py-4 rounded-full shadow-xl hover:bg-[#8B7347] transition-all transform hover:-translate-y-1 tracking-widest text-sm font-bold flex items-center gap-2 opacity-90 hover:opacity-100 group"
+			class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 bg-[#A88B58] text-white px-8 py-4 rounded-full shadow-xl hover:bg-[#8B7347] transition-all transform hover:-translate-y-1 tracking-widest text-sm font-bold flex items-center gap-2 opacity-90 hover:opacity-100 group"
 		>
 			<span class="group-hover:animate-bounce">📩</span>
 			<span>無料体験レッスンを申し込む</span>
