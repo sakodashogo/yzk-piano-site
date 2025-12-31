@@ -132,11 +132,10 @@ const newsContents = response.contents;
           <div id="video-slider" class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-[7.5%] md:px-[15%] pb-8 scroll-smooth items-center" style="scrollbar-width: none; -ms-overflow-style: none;">
             {videoIds.map((id, index) => (
               <div class="video-slide min-w-[85%] md:min-w-[70%] lg:min-w-[60%] snap-center transition-all duration-500 ease-out opacity-40 scale-95 origin-center relative" data-index={index}>
+                {/* 修正点: bg-black を追加して、画像ロード失敗時の背景を黒にする */}
                 <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D9] bg-black relative">
                   
-                  {/* 1. YouTube Iframe (一番後ろ)
-                      controls=0 を削除してシークバーを表示させる
-                  */}
+                  {/* 1. YouTube Iframe (一番後ろ) */}
                   <iframe 
                     src={`https://www.youtube.com/embed/${id}?enablejsapi=1&rel=0`} 
                     title="YouTube video player" 
@@ -147,11 +146,24 @@ const newsContents = response.contents;
                     allowfullscreen>
                   </iframe>
 
-                  {/* 2. サムネイル画像 (中層：再生前のみ表示) */}
-                  <div 
-                    class="video-poster absolute inset-0 z-20 bg-cover bg-center transition-opacity duration-300"
-                    style={`background-image: url(https://i.ytimg.com/vi/${id}/maxresdefault.jpg);`}
-                  ></div>
+                  {/* 2. サムネイル画像
+                      修正点: onerror をインラインで記述して確実に実行させる。
+                      maxresdefault -> sddefault -> hqdefault の順にフォールバック
+                  */}
+                  <img 
+                    src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`}
+                    alt="Video thumbnail"
+                    class="video-thumbnail video-poster absolute inset-0 z-20 w-full h-full object-cover transition-opacity duration-300"
+                    onerror={`
+                      this.onerror=null; 
+                      const currentSrc = this.src;
+                      if (currentSrc.includes('maxresdefault')) {
+                        this.src = 'https://i.ytimg.com/vi/${id}/sddefault.jpg';
+                      } else if (currentSrc.includes('sddefault')) {
+                        this.src = 'https://i.ytimg.com/vi/${id}/hqdefault.jpg';
+                      }
+                    `}
+                  />
 
                   {/* 3. 再生ボタン付きオーバーレイ (最前面：タップ用) */}
                   <div class="video-overlay absolute inset-0 z-30 flex items-center justify-center bg-black/10 cursor-pointer group-hover:bg-black/5 transition-colors">
@@ -166,20 +178,6 @@ const newsContents = response.contents;
               </div>
             ))}
           </div>
-
-          {/* 前へボタン */}
-          <button id="prev-btn" class="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-[#A88B58] p-3 md:p-4 rounded-full shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 z-20 hidden md:block" aria-label="前の動画へ">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
-          </button>
-
-          {/* 次へボタン */}
-          <button id="next-btn" class="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-[#A88B58] p-3 md:p-4 rounded-full shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 z-20 hidden md:block" aria-label="次の動画へ">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
-          </button>
           
           {/* インジケーター */}
           <div class="flex justify-center gap-3 mt-2">
@@ -333,8 +331,6 @@ const newsContents = response.contents;
 <script>
   // スライダーの制御スクリプト
   const slider = document.getElementById('video-slider');
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
   const dots = document.querySelectorAll('.slider-dot');
   const slides = document.querySelectorAll('.video-slide');
 
@@ -460,21 +456,6 @@ const newsContents = response.contents;
       requestAnimationFrame(updateStyles);
       isScrolling = setTimeout(updateStyles, 66);
     });
-
-    // ボタン操作（ループ対応）
-    if (prevBtn && nextBtn) {
-      prevBtn.addEventListener('click', () => {
-        const currentIndex = getActiveIndex();
-        const nextIndex = currentIndex === 0 ? slides.length - 1 : currentIndex - 1;
-        slides[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      });
-
-      nextBtn.addEventListener('click', () => {
-        const currentIndex = getActiveIndex();
-        const nextIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
-        slides[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      });
-    }
 
     // ドット操作
     dots.forEach((dot, i) => {
