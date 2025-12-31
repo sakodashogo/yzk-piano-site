@@ -119,7 +119,7 @@ const newsContents = response.contents;
       </div>
     </section>
 
-    {/* --- 動画セクション（3本・センター開始・ループ仕様） --- */}
+    {/* --- 動画セクションの修正（センターモード・のぞき見仕様・操作改善） --- */}
     <section class="py-24 bg-[#FCFAF7] overflow-hidden">
       <div class="w-full max-w-[1400px] mx-auto">
         <div class="text-center mb-12 px-6">
@@ -131,13 +131,18 @@ const newsContents = response.contents;
         <div class="relative group py-4">
           <div id="video-slider" class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-[7.5%] md:px-[15%] pb-8 scroll-smooth items-center" style="scrollbar-width: none; -ms-overflow-style: none;">
             {videoIds.map((id, index) => (
-              /* 初期状態は薄く・小さく設定 */
-              <div class="video-slide min-w-[85%] md:min-w-[70%] lg:min-w-[60%] snap-center transition-all duration-500 ease-out opacity-40 scale-95 origin-center" data-index={index}>
+              /* デザイン設定:
+                - min-w-[85%]: モバイルで左右が少し見える幅
+                - md:min-w-[70%]: PCで左右が見える幅
+                - opacity/scale: JavaScriptで制御するため初期値設定
+                - iframeのpointer-events制御: CSSで .active クラスがついた時のみ auto にする
+              */
+              <div class="video-slide min-w-[85%] md:min-w-[70%] lg:min-w-[60%] snap-center transition-all duration-500 ease-out opacity-40 scale-95 origin-center relative" data-index={index}>
                 <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D9] bg-black">
                   <iframe 
                     src={`https://www.youtube.com/embed/${id}?enablejsapi=1`} 
                     title="YouTube video player" 
-                    class="w-full h-full pointer-events-none md:pointer-events-auto"
+                    class="w-full h-full"
                     frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                     referrerpolicy="strict-origin-when-cross-origin" 
@@ -227,7 +232,7 @@ const newsContents = response.contents;
         </p>
 
         <div class="grid md:grid-cols-2 gap-8 items-start text-left mb-12">
-          {/* モバイルでは非表示 */}
+          {/* 修正点：hidden md:block を追加してモバイルでは非表示に */}
           <div class="hidden md:block aspect-video w-full rounded-2xl overflow-hidden shadow-sm border border-[#E8E2D9]">
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.066480572621!2d139.79634597628873!3d35.682701130107765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188944510b6563%3A0xc3f7a63d91965a39!2z5riF5r6E55m95rKz6aeF!5e0!3m2!1sja!2sjp!4v1711234567890!5m2!1sja!2sjp" 
@@ -286,7 +291,17 @@ const newsContents = response.contents;
     display: none;
   }
   
-  /* アクティブなスライドのスタイル */
+  /* デフォルト：iframeへの操作を無効化（スワイプしやすくする） */
+  .video-slide iframe {
+    pointer-events: none;
+  }
+  
+  /* アクティブ時：iframeへの操作を有効化（再生ボタンを押せるようにする） */
+  .video-slide.active iframe {
+    pointer-events: auto;
+  }
+
+  /* アクティブなスライドの見た目 */
   .video-slide.active {
     opacity: 1;
     transform: scale(1);
@@ -303,7 +318,7 @@ const newsContents = response.contents;
   const slides = document.querySelectorAll('.video-slide');
 
   if (slider && slides.length > 0) {
-    // 現在のアクティブなインデックスを取得するヘルパー関数
+    // 現在のアクティブなインデックスを取得する関数
     const getActiveIndex = () => {
        const sliderRect = slider.getBoundingClientRect();
        const sliderCenter = sliderRect.left + sliderRect.width / 2;
@@ -326,7 +341,7 @@ const newsContents = response.contents;
     const updateStyles = () => {
       const activeIndex = getActiveIndex();
       
-      // クラスの付け替え
+      // クラスの付け替え（これが pointer-events の切り替えも担う）
       slides.forEach((slide, index) => {
         if (index === activeIndex) {
           slide.classList.add('active');
@@ -350,15 +365,16 @@ const newsContents = response.contents;
     };
 
     // 初期化：真ん中（インデックス1）へスクロール
-    // 完全にロードされた後に実行するため少し遅延させるか、requestAnimationFrameを使用
     const initScroll = () => {
         if (slides[1]) {
+            // behavior: 'auto' で瞬時に移動
             slides[1].scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+            // スタイルを即座に更新して真ん中の動画をクリック可能にする
             updateStyles();
         }
     };
     
-    // 画像やiframeのロード待ちなども考慮して実行
+    // ロード完了時に実行
     if (document.readyState === 'complete') {
         initScroll();
     } else {
@@ -366,22 +382,28 @@ const newsContents = response.contents;
     }
 
     // スクロールイベントで監視してスタイル更新
+    // モバイルスクロール時にも pointer-events を動的に切り替える
+    let isScrolling;
     slider.addEventListener('scroll', () => {
+      window.clearTimeout(isScrolling);
       requestAnimationFrame(updateStyles);
+      
+      // スクロール終了を検知して確実にスタイルを適用
+      isScrolling = setTimeout(() => {
+         updateStyles();
+      }, 66);
     });
 
     // ボタン操作（ループ対応）
     if (prevBtn && nextBtn) {
       prevBtn.addEventListener('click', () => {
         const currentIndex = getActiveIndex();
-        // 現在が0なら最後(2)へ、それ以外は-1
         const nextIndex = currentIndex === 0 ? slides.length - 1 : currentIndex - 1;
         slides[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       });
 
       nextBtn.addEventListener('click', () => {
         const currentIndex = getActiveIndex();
-        // 現在が最後(2)なら最初(0)へ、それ以外は+1
         const nextIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
         slides[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       });
