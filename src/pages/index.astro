@@ -134,9 +134,11 @@ const newsContents = response.contents;
               <div class="video-slide min-w-[85%] md:min-w-[70%] lg:min-w-[60%] snap-center transition-all duration-500 ease-out opacity-40 scale-95 origin-center relative" data-index={index}>
                 <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D9] bg-black relative">
                   
-                  {/* 1. YouTube Iframe (一番後ろ) */}
+                  {/* 1. YouTube Iframe (一番後ろ)
+                      controls=0 を削除してシークバーを表示させる
+                  */}
                   <iframe 
-                    src={`https://www.youtube.com/embed/${id}?enablejsapi=1&rel=0&controls=0`} 
+                    src={`https://www.youtube.com/embed/${id}?enablejsapi=1&rel=0`} 
                     title="YouTube video player" 
                     class="w-full h-full relative z-10"
                     frameborder="0" 
@@ -145,7 +147,7 @@ const newsContents = response.contents;
                     allowfullscreen>
                   </iframe>
 
-                  {/* 2. サムネイル画像 (中層：YouTubeのボタンを隠すため) */}
+                  {/* 2. サムネイル画像 (中層：再生前のみ表示) */}
                   <div 
                     class="video-poster absolute inset-0 z-20 bg-cover bg-center transition-opacity duration-300"
                     style={`background-image: url(https://i.ytimg.com/vi/${id}/maxresdefault.jpg);`}
@@ -405,16 +407,33 @@ const newsContents = response.contents;
     };
 
     // カバー（再生ボタン）のクリックイベント設定
-    slides.forEach(slide => {
+    slides.forEach((slide, index) => {
         const overlay = slide.querySelector('.video-overlay');
         const iframe = slide.querySelector('iframe');
         
         if (overlay) {
             overlay.addEventListener('click', () => {
-                // カバーとポスターを隠してiframeを有効化
-                slide.classList.add('is-playing');
-                // 再生コマンド送信
-                postMessageToIframe(iframe, 'playVideo');
+                const activeIndex = getActiveIndex();
+                
+                if (index === activeIndex) {
+                    // 中央（アクティブ）の動画をクリック → 即座に再生
+                    slide.classList.add('is-playing');
+                    postMessageToIframe(iframe, 'playVideo');
+                } else {
+                    // 横（非アクティブ）の動画をクリック → 中央へ移動して再生
+                    
+                    // 1. スクロール実行
+                    slides[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    
+                    // 2. スクロール完了後（約0.6秒後）に再生を試みる
+                    setTimeout(() => {
+                        // 念のため現在アクティブか再確認して再生
+                        if (getActiveIndex() === index) {
+                            slide.classList.add('is-playing');
+                            postMessageToIframe(iframe, 'playVideo');
+                        }
+                    }, 600);
+                }
             });
         }
     });
