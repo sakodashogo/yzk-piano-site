@@ -8,9 +8,9 @@ const pageDescription = "江東区・清澄白河エリアを中心に活動す�
 
 // YouTube動画のIDリスト（3本）
 const videoIds = [
-  "OIRmBSviWrw", // 1本目（左）
-  "xh65ftmaIgc", // 2本目（中央・初期表示）
-  "31muaoyHDuo", // 3本目（右）
+  "OIRmBSviWrw", // 1本目
+  "xh65ftmaIgc", // 2本目
+  "31muaoyHDuo", // 3本目
 ];
 
 // microCMSからお知らせを取得（最新3件）
@@ -42,7 +42,7 @@ const newsContents = response.contents;
         <h1 class="text-3xl md:text-5xl font-serif font-bold mb-10 leading-tight tracking-wider text-[#544A40]">
           日常に彩りを添える、<br/>心豊かなピアノの時間
         </h1>
-        
+    
         <p class="text-base md:text-lg mb-16 leading-loose">
           講師がご自宅へ伺い、あなたの大切なピアノで、<br/>
           あなただけの音色を一緒に奏でます。
@@ -64,7 +64,7 @@ const newsContents = response.contents;
                   {item.title}
                 </span>
                 <span class="hidden md:block ml-auto text-xs text-[#A88B58] opacity-0 group-hover:opacity-100 transition-opacity">
-                   Read more →
+                  Read more →
                 </span>
               </div>
             </a>
@@ -73,7 +73,7 @@ const newsContents = response.contents;
           <p class="text-sm opacity-60 text-center">現在お知らせはありません。</p>
         )}
       </div>
-      
+ 
       <div class="mt-8 text-right">
         <a href="/news" class="text-xs font-bold tracking-widest text-[#A88B58] hover:text-[#8B7347] border-b border-[#A88B58] pb-1 transition-colors">
           お知らせ一覧を見る →
@@ -102,11 +102,11 @@ const newsContents = response.contents;
                 東京音楽大学 卒業
               </p>
               <p>
-                江東区・清澄白河を中心に、ご自宅への出張ピアノレッスンを行っております。
+                江東区・清澄白河を中心に、ご自宅への出張ピアノレッスンを行っております。<br/>
                 これまで多くの門下生を指導し、音楽を通じた心の交流を大切にしてきました。
               </p>
               <p>
-                「出張レッスン」だからこそ、移動の負担なく、いつもの慣れ親しんだピアノでリラックスして学んでいただけます。
+                「出張レッスン」だからこそ、移動の負担なく、いつもの慣れ親しんだピアノでリラックスして学んでいただけます。<br/>
                 きめ細やかな指導で、技術だけでなく、音楽を一生のパートナーにするお手伝いをいたします。
               </p>
             </div>
@@ -127,15 +127,13 @@ const newsContents = response.contents;
           <p class="text-[#A88B58] text-sm tracking-widest font-serif">紹介動画</p>
         </div>
         
-        {/* 動画スライダーコンテナ */}
         <div class="relative group py-4">
           <div id="video-slider" class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-[7.5%] md:px-[15%] pb-8 scroll-smooth items-center" style="scrollbar-width: none; -ms-overflow-style: none;">
             {videoIds.map((id, index) => (
               <div class="video-slide min-w-[85%] md:min-w-[70%] lg:min-w-[60%] snap-center transition-all duration-500 ease-out opacity-40 scale-95 origin-center relative" data-index={index}>
-                {/* 修正点: bg-black を追加して、画像ロード失敗時も黒背景にする */}
                 <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D9] bg-black relative">
                   
-                  {/* 1. YouTube Iframe (一番後ろ) */}
+                  {/* YouTube Iframe */}
                   <iframe 
                     src={`https://www.youtube.com/embed/${id}?enablejsapi=1&rel=0`} 
                     title="YouTube video player" 
@@ -146,26 +144,24 @@ const newsContents = response.contents;
                     allowfullscreen>
                   </iframe>
 
-                  {/* 2. サムネイル画像
-                      修正点: onerror を修正し、maxresdefault -> sddefault -> hqdefault の順に確実にフォールバックさせる。
-                  */}
+                  {/* サムネイル画像（修正点：onloadとonerrorを強化） */}
                   <img 
                     src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`}
                     alt="Video thumbnail"
                     class="video-thumbnail video-poster absolute inset-0 z-20 w-full h-full object-cover transition-opacity duration-300"
+                    onload={`if (this.naturalWidth === 120) this.src = 'https://i.ytimg.com/vi/${id}/hqdefault.jpg';`}
                     onerror={`
                       if (this.src.includes('maxresdefault')) {
                         this.src = 'https://i.ytimg.com/vi/${id}/sddefault.jpg';
                       } else if (this.src.includes('sddefault')) {
                         this.src = 'https://i.ytimg.com/vi/${id}/hqdefault.jpg';
                       } else {
-                        // hqdefaultも読み込めない場合は画像を非表示にして背景(bg-black)を見せる
                         this.style.display = 'none';
                       }
                     `}
                   />
 
-                  {/* 3. 再生ボタン付きオーバーレイ (最前面：タップ用) */}
+                  {/* 再生ボタン付きオーバーレイ */}
                   <div class="video-overlay absolute inset-0 z-30 flex items-center justify-center bg-black/10 cursor-pointer group-hover:bg-black/5 transition-colors">
                     <button class="bg-white/90 text-[#A88B58] rounded-full p-4 md:p-5 shadow-2xl backdrop-blur-sm transform transition-transform duration-300 hover:scale-110" aria-label="再生する">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 md:w-10 md:h-10 pl-1">
@@ -179,7 +175,6 @@ const newsContents = response.contents;
             ))}
           </div>
           
-          {/* インジケーター */}
           <div class="flex justify-center gap-3 mt-2">
             {videoIds.map((_, index) => (
               <button class="slider-dot w-2 h-2 rounded-full bg-[#E8E2D9] transition-all duration-300 hover:bg-[#A88B58]/50" data-index={index} aria-label={`${index + 1}番目の動画へ`}></button>
@@ -244,10 +239,9 @@ const newsContents = response.contents;
         </p>
 
         <div class="grid md:grid-cols-2 gap-8 items-start text-left mb-12">
-          {/* モバイルでは非表示 */}
           <div class="hidden md:block aspect-video w-full rounded-2xl overflow-hidden shadow-sm border border-[#E8E2D9]">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.066480572621!2d139.79634597628873!3d35.682701130107765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188944510b6563%3A0xc3f7a63d91965a39!2z5riF5r6E55m95rKz6aeF!5e0!3m2!1sja!2sjp!4v1711234567890!5m2!1sja!2sjp" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.1378875323945!2d139.79644027581694!3d35.68102167258758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018894170305881%3A0x644265147879e62e!2z5riF5r6E55m95rKz6aeF!5e0!3m2!1sja!2sjp!4v1710000000000!5m2!1sja!2sjp" 
               width="100%" 
               height="100%" 
               style="border:0;"
@@ -298,29 +292,24 @@ const newsContents = response.contents;
 </Layout>
 
 <style>
-  /* スクロールバーを非表示にする（WebKit系） */
   #video-slider::-webkit-scrollbar {
     display: none;
   }
   
-  /* デフォルト：iframeへのタッチは無効（スクロール優先） */
   .video-slide iframe {
     pointer-events: none;
   }
 
-  /* 再生中：iframeへのタッチを有効化（操作用） */
   .video-slide.is-playing iframe {
     pointer-events: auto;
   }
   
-  /* 再生中：カバーとポスター画像を非表示に */
   .video-slide.is-playing .video-overlay,
   .video-slide.is-playing .video-poster {
     opacity: 0;
     pointer-events: none;
   }
 
-  /* アクティブなスライドの見た目 */
   .video-slide.active {
     opacity: 1;
     transform: scale(1);
@@ -329,13 +318,11 @@ const newsContents = response.contents;
 </style>
 
 <script>
-  // スライダーの制御スクリプト
   const slider = document.getElementById('video-slider');
   const dots = document.querySelectorAll('.slider-dot');
   const slides = document.querySelectorAll('.video-slide');
 
   if (slider && slides.length > 0) {
-    // 現在のアクティブなインデックスを取得する関数
     const getActiveIndex = () => {
        const sliderRect = slider.getBoundingClientRect();
        const sliderCenter = sliderRect.left + sliderRect.width / 2;
@@ -353,7 +340,6 @@ const newsContents = response.contents;
        return index;
     };
 
-    // YouTube Iframeにメッセージを送る関数
     const postMessageToIframe = (iframe, command) => {
       if (iframe && iframe.contentWindow) {
         iframe.contentWindow.postMessage(JSON.stringify({
@@ -364,14 +350,12 @@ const newsContents = response.contents;
       }
     };
 
-    // 動画をリセット（停止＆カバー表示）する関数
     const resetVideo = (slide) => {
         slide.classList.remove('is-playing');
         const iframe = slide.querySelector('iframe');
         postMessageToIframe(iframe, 'pauseVideo');
     };
 
-    // スタイル更新 & スクロール時の動画停止
     const updateStyles = () => {
       const activeIndex = getActiveIndex();
       slides.forEach((slide, index) => {
@@ -381,13 +365,11 @@ const newsContents = response.contents;
         } else {
           slide.classList.remove('active');
           slide.classList.add('opacity-40', 'scale-95');
-          // アクティブでなくなったら動画をリセット
           if (slide.classList.contains('is-playing')) {
-             resetVideo(slide);
+            resetVideo(slide);
           }
         }
       });
-      // ドットの更新
       dots.forEach((dot, index) => {
         if (index === activeIndex) {
           dot.classList.add('bg-[#A88B58]', 'w-4');
@@ -399,7 +381,6 @@ const newsContents = response.contents;
       });
     };
 
-    // カバー（再生ボタン）のクリックイベント設定
     slides.forEach((slide, index) => {
         const overlay = slide.querySelector('.video-overlay');
         const iframe = slide.querySelector('iframe');
@@ -407,20 +388,12 @@ const newsContents = response.contents;
         if (overlay) {
             overlay.addEventListener('click', () => {
                 const activeIndex = getActiveIndex();
-                
                 if (index === activeIndex) {
-                    // 中央（アクティブ）の動画をクリック → 即座に再生
                     slide.classList.add('is-playing');
                     postMessageToIframe(iframe, 'playVideo');
                 } else {
-                    // 横（非アクティブ）の動画をクリック → 中央へ移動して再生
-                    
-                    // 1. スクロール実行
                     slides[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                    
-                    // 2. スクロール完了後（約0.6秒後）に再生を試みる
                     setTimeout(() => {
-                        // 念のため現在アクティブか再確認して再生
                         if (getActiveIndex() === index) {
                             slide.classList.add('is-playing');
                             postMessageToIframe(iframe, 'playVideo');
@@ -431,34 +404,24 @@ const newsContents = response.contents;
         }
     });
 
-    // 初期化：真ん中（インデックス1）へスクロール
     const initScroll = () => {
         if (slides[1] && slider) {
-            // 修正: scrollIntoViewはページスクロールを誘発するため使用せず、
-            // スライダーコンテナのスクロール位置(scrollLeft)を直接計算して中央に配置する
             const slide = slides[1];
             const sliderRect = slider.getBoundingClientRect();
             const slideRect = slide.getBoundingClientRect();
-            
-            // (スライドの現在位置 - コンテナの左端) - (コンテナの余白 / 2) = 移動すべき量
             const currentOffset = slideRect.left - sliderRect.left;
             const centerOffset = (sliderRect.width - slideRect.width) / 2;
-            
-            // コンテナをスクロール
             slider.scrollLeft += (currentOffset - centerOffset);
-            
             updateStyles();
         }
     };
     
-    // ロード完了時に実行
     if (document.readyState === 'complete') {
         initScroll();
     } else {
         window.addEventListener('load', initScroll);
     }
 
-    // スクロールイベント
     let isScrolling;
     slider.addEventListener('scroll', () => {
       window.clearTimeout(isScrolling);
@@ -466,7 +429,6 @@ const newsContents = response.contents;
       isScrolling = setTimeout(updateStyles, 66);
     });
 
-    // ドット操作
     dots.forEach((dot, i) => {
        dot.addEventListener('click', () => {
          slides[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
