@@ -64,7 +64,7 @@ const newsContents = response.contents;
                   {item.title}
                 </span>
                 <span class="hidden md:block ml-auto text-xs text-[#A88B58] opacity-0 group-hover:opacity-100 transition-opacity">
-                  Read more →
+                   Read more →
                 </span>
               </div>
             </a>
@@ -132,7 +132,7 @@ const newsContents = response.contents;
           <div id="video-slider" class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-[7.5%] md:px-[15%] pb-8 scroll-smooth items-center" style="scrollbar-width: none; -ms-overflow-style: none;">
             {videoIds.map((id, index) => (
               <div class="video-slide min-w-[85%] md:min-w-[70%] lg:min-w-[60%] snap-center transition-all duration-500 ease-out opacity-40 scale-95 origin-center relative" data-index={index}>
-                {/* 修正点: bg-black を追加して、画像ロード失敗時の背景を黒にする */}
+                {/* 修正点: bg-black を追加して、画像ロード失敗時も黒背景にする */}
                 <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D9] bg-black relative">
                   
                   {/* 1. YouTube Iframe (一番後ろ) */}
@@ -147,20 +147,20 @@ const newsContents = response.contents;
                   </iframe>
 
                   {/* 2. サムネイル画像
-                      修正点: onerror をインラインで記述して確実に実行させる。
-                      maxresdefault -> sddefault -> hqdefault の順にフォールバック
+                      修正点: onerror を修正し、maxresdefault -> sddefault -> hqdefault の順に確実にフォールバックさせる。
                   */}
                   <img 
                     src={`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`}
                     alt="Video thumbnail"
                     class="video-thumbnail video-poster absolute inset-0 z-20 w-full h-full object-cover transition-opacity duration-300"
                     onerror={`
-                      this.onerror=null; 
-                      const currentSrc = this.src;
-                      if (currentSrc.includes('maxresdefault')) {
+                      if (this.src.includes('maxresdefault')) {
                         this.src = 'https://i.ytimg.com/vi/${id}/sddefault.jpg';
-                      } else if (currentSrc.includes('sddefault')) {
+                      } else if (this.src.includes('sddefault')) {
                         this.src = 'https://i.ytimg.com/vi/${id}/hqdefault.jpg';
+                      } else {
+                        // hqdefaultも読み込めない場合は画像を非表示にして背景(bg-black)を見せる
+                        this.style.display = 'none';
                       }
                     `}
                   />
@@ -341,7 +341,6 @@ const newsContents = response.contents;
        const sliderCenter = sliderRect.left + sliderRect.width / 2;
        let minDistance = Infinity;
        let index = 0;
-       
        slides.forEach((slide, i) => {
          const slideRect = slide.getBoundingClientRect();
          const slideCenter = slideRect.left + slideRect.width / 2;
@@ -375,7 +374,6 @@ const newsContents = response.contents;
     // スタイル更新 & スクロール時の動画停止
     const updateStyles = () => {
       const activeIndex = getActiveIndex();
-      
       slides.forEach((slide, index) => {
         if (index === activeIndex) {
           slide.classList.add('active');
@@ -389,7 +387,6 @@ const newsContents = response.contents;
           }
         }
       });
-
       // ドットの更新
       dots.forEach((dot, index) => {
         if (index === activeIndex) {
@@ -436,8 +433,20 @@ const newsContents = response.contents;
 
     // 初期化：真ん中（インデックス1）へスクロール
     const initScroll = () => {
-        if (slides[1]) {
-            slides[1].scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+        if (slides[1] && slider) {
+            // 修正: scrollIntoViewはページスクロールを誘発するため使用せず、
+            // スライダーコンテナのスクロール位置(scrollLeft)を直接計算して中央に配置する
+            const slide = slides[1];
+            const sliderRect = slider.getBoundingClientRect();
+            const slideRect = slide.getBoundingClientRect();
+            
+            // (スライドの現在位置 - コンテナの左端) - (コンテナの余白 / 2) = 移動すべき量
+            const currentOffset = slideRect.left - sliderRect.left;
+            const centerOffset = (sliderRect.width - slideRect.width) / 2;
+            
+            // コンテナをスクロール
+            slider.scrollLeft += (currentOffset - centerOffset);
+            
             updateStyles();
         }
     };
