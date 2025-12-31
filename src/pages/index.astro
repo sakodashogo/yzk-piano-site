@@ -134,9 +134,9 @@ const newsContents = response.contents;
               <div class="video-slide min-w-[85%] md:min-w-[70%] lg:min-w-[60%] snap-center transition-all duration-500 ease-out opacity-40 scale-95 origin-center relative" data-index={index}>
                 <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D9] bg-black relative">
                   
-                  {/* YouTube Iframe */}
+                  {/* 1. YouTube Iframe (一番後ろ) */}
                   <iframe 
-                    src={`https://www.youtube.com/embed/${id}?enablejsapi=1&rel=0`} 
+                    src={`https://www.youtube.com/embed/${id}?enablejsapi=1&rel=0&controls=0`} 
                     title="YouTube video player" 
                     class="w-full h-full relative z-10"
                     frameborder="0" 
@@ -145,9 +145,14 @@ const newsContents = response.contents;
                     allowfullscreen>
                   </iframe>
 
-                  {/* タップ用カバー（スクロール誤爆防止 & 再生ボタン） */}
-                  {/* 最初は表示(z-20)、再生時は隠す */}
-                  <div class="video-overlay absolute inset-0 z-20 flex items-center justify-center bg-black/10 cursor-pointer group-hover:bg-black/5 transition-colors">
+                  {/* 2. サムネイル画像 (中層：YouTubeのボタンを隠すため) */}
+                  <div 
+                    class="video-poster absolute inset-0 z-20 bg-cover bg-center transition-opacity duration-300"
+                    style={`background-image: url(https://i.ytimg.com/vi/${id}/maxresdefault.jpg);`}
+                  ></div>
+
+                  {/* 3. 再生ボタン付きオーバーレイ (最前面：タップ用) */}
+                  <div class="video-overlay absolute inset-0 z-30 flex items-center justify-center bg-black/10 cursor-pointer group-hover:bg-black/5 transition-colors">
                     <button class="bg-white/90 text-[#A88B58] rounded-full p-4 md:p-5 shadow-2xl backdrop-blur-sm transform transition-transform duration-300 hover:scale-110" aria-label="再生する">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 md:w-10 md:h-10 pl-1">
                         <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
@@ -308,8 +313,9 @@ const newsContents = response.contents;
     pointer-events: auto;
   }
   
-  /* 再生中：カバーを非表示に */
-  .video-slide.is-playing .video-overlay {
+  /* 再生中：カバーとポスター画像を非表示に */
+  .video-slide.is-playing .video-overlay,
+  .video-slide.is-playing .video-poster {
     opacity: 0;
     pointer-events: none;
   }
@@ -405,7 +411,7 @@ const newsContents = response.contents;
         
         if (overlay) {
             overlay.addEventListener('click', () => {
-                // カバーを隠してiframeを有効化
+                // カバーとポスターを隠してiframeを有効化
                 slide.classList.add('is-playing');
                 // 再生コマンド送信
                 postMessageToIframe(iframe, 'playVideo');
