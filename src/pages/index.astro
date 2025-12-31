@@ -6,6 +6,13 @@ import { client } from '../lib/microcms';
 const pageTitle = "江東区・清澄白河の出張ピアノレッスン | 髙橋遊月ピアノ教室";
 const pageDescription = "江東区・清澄白河エリアを中心に活動する講師による出張ピアノ教室です。";
 
+// YouTube動画のIDリスト（3本に厳選）
+const videoIds = [
+  "OIRmBSviWrw", // 1本目（左）
+  "xh65ftmaIgc", // 2本目（中央・初期表示）
+  "31muaoyHDuo", // 3本目（右）
+];
+
 // microCMSからお知らせを取得（最新3件）
 const response = await client.get({
   endpoint: "news",
@@ -66,7 +73,7 @@ const newsContents = response.contents;
           <p class="text-sm opacity-60 text-center">現在お知らせはありません。</p>
         )}
       </div>
-    
+      
       <div class="mt-8 text-right">
         <a href="/news" class="text-xs font-bold tracking-widest text-[#A88B58] hover:text-[#8B7347] border-b border-[#A88B58] pb-1 transition-colors">
           お知らせ一覧を見る →
@@ -112,32 +119,63 @@ const newsContents = response.contents;
       </div>
     </section>
 
-    {/* --- 動画セクションの追加 --- */}
-    <section class="py-24 bg-[#FCFAF7]">
-      <div class="max-w-4xl mx-auto px-6">
-        <div class="text-center mb-16">
+    {/* --- 動画セクション（3本・センター開始・ループ仕様） --- */}
+    <section class="py-24 bg-[#FCFAF7] overflow-hidden">
+      <div class="w-full max-w-[1400px] mx-auto">
+        <div class="text-center mb-12 px-6">
           <h2 class="text-3xl font-serif mb-4">Introduction Movie</h2>
           <p class="text-[#A88B58] text-sm tracking-widest font-serif">紹介動画</p>
         </div>
         
-        <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D9]">
-          <iframe 
-            src="https://www.youtube.com/embed/8iY5cbtwxiM?si=zOM7JXIwvIrbpg-_" 
-            title="YouTube video player" 
-            class="w-full h-full"
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" 
-            allowfullscreen>
-          </iframe>
+        {/* 動画スライダーコンテナ */}
+        <div class="relative group py-4">
+          <div id="video-slider" class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-[7.5%] md:px-[15%] pb-8 scroll-smooth items-center" style="scrollbar-width: none; -ms-overflow-style: none;">
+            {videoIds.map((id, index) => (
+              /* 初期状態は薄く・小さく設定 */
+              <div class="video-slide min-w-[85%] md:min-w-[70%] lg:min-w-[60%] snap-center transition-all duration-500 ease-out opacity-40 scale-95 origin-center" data-index={index}>
+                <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-[#E8E2D9] bg-black">
+                  <iframe 
+                    src={`https://www.youtube.com/embed/${id}?enablejsapi=1`} 
+                    title="YouTube video player" 
+                    class="w-full h-full pointer-events-none md:pointer-events-auto"
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                  </iframe>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 前へボタン */}
+          <button id="prev-btn" class="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-[#A88B58] p-3 md:p-4 rounded-full shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 z-20 hidden md:block" aria-label="前の動画へ">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+
+          {/* 次へボタン */}
+          <button id="next-btn" class="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-[#A88B58] p-3 md:p-4 rounded-full shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 z-20 hidden md:block" aria-label="次の動画へ">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+          
+          {/* インジケーター */}
+          <div class="flex justify-center gap-3 mt-2">
+            {videoIds.map((_, index) => (
+              <button class="slider-dot w-2 h-2 rounded-full bg-[#E8E2D9] transition-all duration-300 hover:bg-[#A88B58]/50" data-index={index} aria-label={`${index + 1}番目の動画へ`}></button>
+            ))}
+          </div>
         </div>
         
-        <p class="mt-8 text-center text-[#6B5F54] text-sm leading-loose font-serif">
-          レッスンの雰囲気や演奏の様子を動画でご覧いただけます。
+        <p class="mt-8 text-center text-[#6B5F54] text-sm leading-loose font-serif px-6">
+          レッスンの雰囲気や演奏の様子を動画でご覧いただけます。<br/>
+          <span class="text-xs opacity-70">※左右にスワイプして他の動画をご覧になれます</span>
         </p>
       </div>
     </section>
-    {/* --- 動画セクションの追加終了 --- */}
 
     <section class="py-24 bg-[#F7F3EE]">
       <div class="max-w-5xl mx-auto px-6">
@@ -187,9 +225,9 @@ const newsContents = response.contents;
           江東区の<span class="font-bold text-[#A88B58]">清澄白河駅・門前仲町駅</span>周辺を中心に、<br class="hidden md:inline"/>
           講師が自転車または公共交通機関で伺える範囲で活動しています。
         </p>
-        
+
         <div class="grid md:grid-cols-2 gap-8 items-start text-left mb-12">
-          {/* 修正点：hidden md:block を追加してモバイルでは非表示に */}
+          {/* モバイルでは非表示 */}
           <div class="hidden md:block aspect-video w-full rounded-2xl overflow-hidden shadow-sm border border-[#E8E2D9]">
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.066480572621!2d139.79634597628873!3d35.682701130107765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188944510b6563%3A0xc3f7a63d91965a39!2z5riF5r6E55m95rKz6aeF!5e0!3m2!1sja!2sjp!4v1711234567890!5m2!1sja!2sjp" 
@@ -241,3 +279,119 @@ const newsContents = response.contents;
 
   </main>
 </Layout>
+
+<style>
+  /* スクロールバーを非表示にする（WebKit系） */
+  #video-slider::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* アクティブなスライドのスタイル */
+  .video-slide.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 10;
+  }
+</style>
+
+<script>
+  // スライダーの制御スクリプト
+  const slider = document.getElementById('video-slider');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const dots = document.querySelectorAll('.slider-dot');
+  const slides = document.querySelectorAll('.video-slide');
+
+  if (slider && slides.length > 0) {
+    // 現在のアクティブなインデックスを取得するヘルパー関数
+    const getActiveIndex = () => {
+       const sliderRect = slider.getBoundingClientRect();
+       const sliderCenter = sliderRect.left + sliderRect.width / 2;
+       let minDistance = Infinity;
+       let index = 0;
+       
+       slides.forEach((slide, i) => {
+         const slideRect = slide.getBoundingClientRect();
+         const slideCenter = slideRect.left + slideRect.width / 2;
+         const distance = Math.abs(sliderCenter - slideCenter);
+         if (distance < minDistance) {
+           minDistance = distance;
+           index = i;
+         }
+       });
+       return index;
+    };
+
+    // スタイルを更新する関数
+    const updateStyles = () => {
+      const activeIndex = getActiveIndex();
+      
+      // クラスの付け替え
+      slides.forEach((slide, index) => {
+        if (index === activeIndex) {
+          slide.classList.add('active');
+          slide.classList.remove('opacity-40', 'scale-95');
+        } else {
+          slide.classList.remove('active');
+          slide.classList.add('opacity-40', 'scale-95');
+        }
+      });
+
+      // ドットの更新
+      dots.forEach((dot, index) => {
+        if (index === activeIndex) {
+          dot.classList.add('bg-[#A88B58]', 'w-4');
+          dot.classList.remove('bg-[#E8E2D9]', 'w-2');
+        } else {
+          dot.classList.remove('bg-[#A88B58]', 'w-4');
+          dot.classList.add('bg-[#E8E2D9]', 'w-2');
+        }
+      });
+    };
+
+    // 初期化：真ん中（インデックス1）へスクロール
+    // 完全にロードされた後に実行するため少し遅延させるか、requestAnimationFrameを使用
+    const initScroll = () => {
+        if (slides[1]) {
+            slides[1].scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+            updateStyles();
+        }
+    };
+    
+    // 画像やiframeのロード待ちなども考慮して実行
+    if (document.readyState === 'complete') {
+        initScroll();
+    } else {
+        window.addEventListener('load', initScroll);
+    }
+
+    // スクロールイベントで監視してスタイル更新
+    slider.addEventListener('scroll', () => {
+      requestAnimationFrame(updateStyles);
+    });
+
+    // ボタン操作（ループ対応）
+    if (prevBtn && nextBtn) {
+      prevBtn.addEventListener('click', () => {
+        const currentIndex = getActiveIndex();
+        // 現在が0なら最後(2)へ、それ以外は-1
+        const nextIndex = currentIndex === 0 ? slides.length - 1 : currentIndex - 1;
+        slides[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      });
+
+      nextBtn.addEventListener('click', () => {
+        const currentIndex = getActiveIndex();
+        // 現在が最後(2)なら最初(0)へ、それ以外は+1
+        const nextIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
+        slides[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      });
+    }
+
+    // ドット操作
+    dots.forEach((dot, i) => {
+       dot.addEventListener('click', () => {
+         slides[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+       });
+    });
+  }
+</script>
