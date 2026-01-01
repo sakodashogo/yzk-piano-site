@@ -50,6 +50,9 @@ const siteName = "髙橋遊月ピアノ教室";
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={socialImageURL} />
 
+        {/* 各ページから構造化データ等を挿入するためのスロットを追加 */}
+        <slot name="head" />
+
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -58,6 +61,7 @@ const siteName = "髙橋遊月ピアノ教室";
         <Header />
 		<main class="flex-1">
             <slot />
+       
         </main>
         <Footer /> </body>
 </html>
