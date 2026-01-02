@@ -43,11 +43,13 @@ const schema = JSON.stringify({
                     <div class="grid md:grid-cols-2 gap-8">
                         <div class="space-y-2">
                             <label
+                                for="name"
                                 class="block text-xs uppercase tracking-widest font-bold text-[#544A40]"
                                 >お名前</label
                             >
                             <input
                                 type="text"
+                                id="name"
                                 name="name"
                                 required
                                 class="w-full border-b border-[#E8E2D9] py-2 focus:border-[#A88B58] outline-none transition-colors bg-transparent placeholder:text-[#DCD3C7] placeholder:font-light"
@@ -56,11 +58,13 @@ const schema = JSON.stringify({
                         </div>
                         <div class="space-y-2">
                             <label
+                                for="tel"
                                 class="block text-xs uppercase tracking-widest font-bold text-[#544A40]"
                                 >お電話番号</label
                             >
                             <input
                                 type="tel"
+                                id="tel"
                                 name="tel"
                                 class="w-full border-b border-[#E8E2D9] py-2 focus:border-[#A88B58] outline-none transition-colors bg-transparent placeholder:text-[#DCD3C7] placeholder:font-light"
                                 placeholder="090-0000-0000"
@@ -69,11 +73,13 @@ const schema = JSON.stringify({
                     </div>
                     <div class="space-y-2">
                         <label
+                            for="email"
                             class="block text-xs uppercase tracking-widest font-bold text-[#544A40]"
                             >メールアドレス</label
                         >
                         <input
                             type="email"
+                            id="email"
                             name="email"
                             required
                             class="w-full border-b border-[#E8E2D9] py-2 focus:border-[#A88B58] outline-none transition-colors bg-transparent placeholder:text-[#DCD3C7] placeholder:font-light"
@@ -83,9 +89,9 @@ const schema = JSON.stringify({
 
                     {/* お問い合わせ内容（ボタン形式） */}
                     <div class="space-y-3">
-                        <label
+                        <span
                             class="block text-xs uppercase tracking-widest font-bold text-[#544A40]"
-                            >お問い合わせ内容</label
+                            >お問い合わせ内容</span
                         >
                         <div class="flex flex-wrap gap-3">
                             <label class="cursor-pointer">
@@ -135,11 +141,13 @@ const schema = JSON.stringify({
 
                     <div class="space-y-2">
                         <label
+                            for="message"
                             class="block text-xs uppercase tracking-widest font-bold text-[#544A40]"
                             >メッセージ</label
                         >
                         <textarea
                             name="message"
+                            id="message"
                             rows="3"
                             class="w-full border-b border-[#E8E2D9] py-2 focus:border-[#A88B58] outline-none transition-colors bg-transparent placeholder:text-[#DCD3C7] placeholder:font-light resize-none"
                             placeholder="レッスンへのご要望やご住所の目安など"
