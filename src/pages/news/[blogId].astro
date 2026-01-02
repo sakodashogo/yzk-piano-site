@@ -16,32 +16,66 @@ export async function getStaticPaths() {
 }
 
 // 記事データを取得
+interface Props {
+  blog: Blog;
+}
 const { blog } = Astro.props;
 
 // ディスクリプションを生成（HTMLタグを除去できない環境なのでシンプルにタイトルを使用）
 const description = `${blog.title} - 髙橋遊月ピアノ教室のお知らせです。`;
 
+// 公開日をフォーマット
+const publishedAt = new Date(blog.publishedAt).toISOString();
+const dateJa = new Date(blog.publishedAt).toLocaleDateString("ja-JP");
+
 const schema = JSON.stringify({
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
+  "@graph": [
     {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: "https://playon-music.jp",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://playon-music.jp",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "お知らせ一覧",
+          item: "https://playon-music.jp/news",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: blog.title,
+          item: `https://playon-music.jp/news/${blog.id}`,
+        },
+      ],
     },
     {
-      "@type": "ListItem",
-      position: 2,
-      name: "お知らせ一覧",
-      item: "https://playon-music.jp/news",
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: blog.title,
-      item: `https://playon-music.jp/news/${blog.id}`,
+      "@type": "Article",
+      headline: blog.title,
+      image: "https://playon-music.jp/senzai.png", // 記事固有の画像がないためデフォルト画像を指定
+      datePublished: publishedAt,
+      dateModified: blog.updatedAt
+        ? new Date(blog.updatedAt).toISOString()
+        : publishedAt,
+      author: {
+        "@type": "Person",
+        name: "髙橋 遊月",
+        url: "https://playon-music.jp",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "髙橋遊月ピアノ教室",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://playon-music.jp/favicon.svg",
+        },
+      },
+      description: description,
     },
   ],
 });

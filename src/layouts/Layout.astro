@@ -8,6 +8,7 @@ interface Props {
     description?: string;
     image?: string;
     article?: boolean;
+    robots?: string;
 }
 
 const {
@@ -15,6 +16,7 @@ const {
     description = "江東区・清澄白河の出張ピアノ教室「髙橋遊月ピアノ教室」。東京音楽大学卒の講師が、ご自宅のピアノでオーダーメイドのレッスンを行います。体験レッスン受付中。",
     image = "/senzai.png", // デフォルトのOGP画像（プロフィール画像を使用）
     article = false,
+    robots = "index, follow", // デフォルトはインデックスさせる
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -37,6 +39,7 @@ const siteName = "髙橋遊月ピアノ教室";
         <meta name="generator" content={Astro.generator} />
 
         <link rel="canonical" href={canonicalURL} />
+        <meta name="robots" content={robots} />
 
         <title>{title}</title>
         <meta name="description" content={description} />
