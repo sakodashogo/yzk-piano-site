@@ -9,9 +9,9 @@ const response = await client.get({
     queries: { fields: ["id", "title", "publishedAt"] },
 });
 const newsContents = response.contents;
-const pageTitle = "お知らせ一覧 | 髙橋遊月ピアノ教室";
+const pageTitle = "お知らせ一覧 | 高橋遊月ピアノ教室";
 const pageDescription =
-    "髙橋遊月ピアノ教室からのお知らせ一覧です。レッスンの様子やスケジュールなど、最新情報をお届けします。";
+    "高橋遊月ピアノ教室からのお知らせ一覧です。レッスンの様子やスケジュールなど、最新情報をお届けします。";
 
 const schema = JSON.stringify({
     "@context": "https://schema.org",

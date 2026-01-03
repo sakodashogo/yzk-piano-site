@@ -22,7 +22,7 @@ interface Props {
 const { blog } = Astro.props;
 
 // ディスクリプションを生成（HTMLタグを除去できない環境なのでシンプルにタイトルを使用）
-const description = `${blog.title} - 髙橋遊月ピアノ教室のお知らせです。`;
+const description = `${blog.title} - 高橋遊月ピアノ教室のお知らせです。`;
 
 // 公開日をフォーマット
 const publishedAt = new Date(blog.publishedAt).toISOString();
@@ -64,12 +64,12 @@ const schema = JSON.stringify({
         : publishedAt,
       author: {
         "@type": "Person",
-        name: "髙橋 遊月",
+        name: "高橋 遊月",
         url: "https://playon-music.jp",
       },
       publisher: {
         "@type": "Organization",
-        name: "髙橋遊月ピアノ教室",
+        name: "高橋遊月ピアノ教室",
         logo: {
           "@type": "ImageObject",
           url: "https://playon-music.jp/favicon.svg",
@@ -82,7 +82,7 @@ const schema = JSON.stringify({
 ---
 
 <Layout
-  title={`${blog.title} | 髙橋遊月ピアノ教室`}
+  title={`${blog.title} | 高橋遊月ピアノ教室`}
   description={description}
   article={true}
 >
