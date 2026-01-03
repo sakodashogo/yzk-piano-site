@@ -1,7 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const pageTitle = "よくある質問 | 髙橋遊月ピアノ教室";
+const pageTitle = "よくある質問 | 江東区・清澄白河 | 髙橋遊月ピアノ教室";
+const pageDescription =
+    "江東区・清澄白河のピアノ訪問レッスン「髙橋遊月ピアノ教室」へのよくある質問。出張費、電子ピアノでのレッスン、振替など。";
 
 const faqs = [
     {
@@ -61,7 +63,7 @@ const schema = JSON.stringify({
 });
 ---
 
-<Layout title={pageTitle}>
+<Layout title={pageTitle} description={pageDescription}>
     <script type="application/ld+json" set:html={schema} slot="head" />
     <section class="py-24 px-6 max-w-3xl mx-auto">
         <div class="text-center mb-16">

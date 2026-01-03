@@ -5,9 +5,10 @@ import { client } from "../lib/microcms";
 import { Image } from "astro:assets";
 
 // SEO用の設定
-const pageTitle = "江東区のピアノ家庭教師・出張レッスン | 髙橋遊月ピアノ教室";
+const pageTitle =
+  "江東区のピアノ家庭教師・訪問レッスン | マンツーマン個人指導 | 髙橋遊月ピアノ教室";
 const pageDescription =
-  "江東区・清澄白河エリア（門前仲町・木場・深川・森下など）を中心に活動する女性講師によるピアノ家庭教師・出張レッスンです。";
+  "江東区・清澄白河エリアで訪問ピアノレッスン。大江戸線・半蔵門線・東西線沿線（清澄白河駅・門前仲町駅・木場駅周辺）へ出張。マンツーマン個人指導で送迎不要、仕事帰りにも便利。体験レッスン受付中。";
 const heroImage =
   "https://images.unsplash.com/photo-1552422535-c45813c61732?q=80&w=2070&auto=format&fit=crop";
 
@@ -55,6 +56,36 @@ const schema = JSON.stringify({
         "冬木",
         "牡丹",
         "古石場",
+        "越中島",
+        "菊川",
+        "千歳",
+        "中央区",
+        "水天宮前",
+        "茅場町",
+        "人形町",
+        "日本橋浜町",
+        "日本橋中洲",
+        "日本橋蛎殻町",
+        "日本橋箱崎町",
+        "墨田区",
+        "立川",
+        "緑",
+        "清澄白河駅",
+        "門前仲町駅",
+        "木場駅",
+        "水天宮前駅",
+        "茅場町駅",
+        "人形町駅",
+        "大江戸線沿線",
+        "半蔵門線沿線",
+        "東西線沿線",
+      ],
+      serviceType: [
+        "ピアノ家庭教師",
+        "ピアノ訪問レッスン",
+        "ピアノ出張レッスン",
+        "マンツーマンレッスン",
+        "個人指導",
       ],
       priceRange: "5,000円〜",
       instructor: {
@@ -109,7 +140,7 @@ const schema = JSON.stringify({
           class="inline-block mb-6 text-[#544A40] font-bold drop-shadow-md tracking-[0.2em] text-xl md:text-2xl font-serif"
         >
           <span class="inline-block">江東区・清澄白河エリアの</span><span
-            class="inline-block">ピアノ家庭教師</span
+            class="inline-block">出張ピアノレッスン</span
           >
         </span>
 
@@ -444,16 +475,31 @@ const schema = JSON.stringify({
             class="bg-white p-8 rounded-xl border border-[#E8E2D9] flex flex-col items-start h-full shadow-sm"
           >
             <h3 class="text-xl font-bold font-serif mb-4 text-[#544A40]">
-              ご自宅への出張
+              ご自宅への訪問レッスン
             </h3>
             <p class="text-base leading-loose text-[#6B5F54] flex-1">
-              生徒様のご自宅へ伺い、いつものピアノでレッスンを行います。移動の手間がなく、リラックスして受講いただけます。
+              講師がご自宅へ出張し、いつものピアノでマンツーマンの個人指導を行います。<span
+                class="font-bold text-[#A88B58]">送迎不要</span
+              >で保護者の方の負担も軽減。仕事帰りの時間帯も対応可能です。
             </p>
-            <span
-              class="mt-6 inline-block text-sm bg-[#A88B58]/10 text-[#A88B58] px-4 py-1.5 rounded-full font-bold"
-            >
-              おすすめ
-            </span>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span
+                class="text-xs bg-[#A88B58]/10 text-[#A88B58] px-3 py-1 rounded-full font-medium"
+                >送迎不要</span
+              >
+              <span
+                class="text-xs bg-[#A88B58]/10 text-[#A88B58] px-3 py-1 rounded-full font-medium"
+                >マンツーマン</span
+              >
+              <span
+                class="text-xs bg-[#A88B58]/10 text-[#A88B58] px-3 py-1 rounded-full font-medium"
+                >仕事帰りOK</span
+              >
+              <span
+                class="text-xs bg-[#A88B58]/10 text-[#A88B58] px-3 py-1 rounded-full font-medium"
+                >体験レッスンあり</span
+              >
+            </div>
           </div>
 
           <div
@@ -469,6 +515,20 @@ const schema = JSON.stringify({
                 >※練習室レンタルの場合、別途会場費がかかります。</span
               >
             </p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span
+                class="text-xs bg-[#A88B58]/10 text-[#A88B58] px-3 py-1 rounded-full font-medium"
+                >マンツーマン</span
+              >
+              <span
+                class="text-xs bg-[#A88B58]/10 text-[#A88B58] px-3 py-1 rounded-full font-medium"
+                >仕事帰りOK</span
+              >
+              <span
+                class="text-xs bg-[#A88B58]/10 text-[#A88B58] px-3 py-1 rounded-full font-medium"
+                >体験レッスンあり</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -551,7 +611,7 @@ const schema = JSON.stringify({
 
         <div class="grid md:grid-cols-2 gap-8 items-start text-left mb-12">
           <div
-            class="hidden md:block aspect-video w-full rounded-2xl overflow-hidden shadow-sm border border-[#E8E2D9]"
+            class="hidden md:block aspect-square w-full rounded-2xl overflow-hidden shadow-sm border border-[#E8E2D9]"
           >
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.066480572621!2d139.79634597628873!3d35.682701130107765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188944510b6563%3A0xc3f7a63d91965a39!2z5riF5r6E55m95rKz6aeF!5e0!3m2!1sja!2sjp!4v1711234567890!5m2!1sja!2sjp"
@@ -566,7 +626,10 @@ const schema = JSON.stringify({
             </iframe>
           </div>
           <div>
-            <div class="flex flex-wrap gap-3 mb-8">
+            <p class="text-xs text-[#A88B58] font-bold mb-2 tracking-wide">
+              江東区
+            </p>
+            <div class="flex flex-wrap gap-2 mb-4">
               {
                 [
                   "清澄白河",
@@ -583,9 +646,46 @@ const schema = JSON.stringify({
                   "冬木",
                   "牡丹",
                   "古石場",
+                  "越中島",
+                  "菊川",
+                  "千歳",
                 ].map((area) => (
-                  <span class="inline-block px-4 py-2 bg-[#F7F3EE] text-[#544A40] text-sm rounded-full border border-[#E8E2D9] cursor-default">
+                  <span class="inline-block px-3 py-1.5 bg-[#F7F3EE] text-[#544A40] text-xs rounded-full border border-[#E8E2D9] cursor-default">
                     {area}
+                  </span>
+                ))
+              }
+            </div>
+            <p class="text-xs text-[#A88B58] font-bold mb-2 tracking-wide">
+              中央区・墨田区（近郎）
+            </p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              {
+                [
+                  "水天宮前",
+                  "茅場町",
+                  "人形町",
+                  "日本橋浜町",
+                  "日本橋中洲",
+                  "日本橋蛎殻町",
+                  "日本橋箱崎町",
+                  "立川",
+                  "緑",
+                ].map((area) => (
+                  <span class="inline-block px-3 py-1.5 bg-[#F7F3EE] text-[#544A40] text-xs rounded-full border border-[#E8E2D9] cursor-default">
+                    {area}
+                  </span>
+                ))
+              }
+            </div>
+            <p class="text-xs text-[#A88B58] font-bold mb-4 tracking-wide">
+              アクセス路線
+            </p>
+            <div class="flex flex-wrap gap-2 mb-8">
+              {
+                ["大江戸線", "半蔵門線", "東西線"].map((line) => (
+                  <span class="inline-block px-3 py-1.5 bg-[#A88B58]/10 text-[#A88B58] text-xs rounded-full font-medium">
+                    {line}
                   </span>
                 ))
               }
