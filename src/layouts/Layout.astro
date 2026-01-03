@@ -13,7 +13,7 @@ interface Props {
 
 const {
     title,
-    description = "江東区・清澄白河の出張ピアノ教室「髙橋遊月ピアノ教室」。東京音楽大学卒の講師が、ご自宅のピアノでオーダーメイドのレッスンを行います。体験レッスン受付中。",
+    description = "江東区・清澄白河のピアノ家庭教師・出張レッスン「髙橋遊月ピアノ教室」。東京音楽大学卒の講師が、ご自宅のピアノでオーダーメイドのレッスンを行います。体験レッスン受付中。",
     image = "/senzai.png", // デフォルトのOGP画像（プロフィール画像を使用）
     article = false,
     robots = "index, follow", // デフォルトはインデックスさせる
@@ -43,6 +43,10 @@ const siteName = "髙橋遊月ピアノ教室";
 
         <title>{title}</title>
         <meta name="description" content={description} />
+        <meta
+            name="keywords"
+            content="ピアノ家庭教師,ピアノ出張レッスン,江東区,清澄白河,門前仲町,木場,深川,森下,白河,三好,平野,佐賀,永代,福住,冬木,牡丹,古石場,ピアノ教室,ピアノレッスン,東京"
+        />
 
         <meta property="og:type" content={type} />
         <meta property="og:url" content={Astro.url} />
